@@ -1,7 +1,7 @@
 BASE_NAME=ffmpeg
-DEPLOYMENT_BUCKET_NAME := desole-packaging
+DEPLOYMENT_BUCKET_NAME := digitalpigeon-lambda-layers-${DEFAULT_AWS_REGION}
 DEPLOYMENT_KEY := $(shell echo $(BASE_NAME)-$$RANDOM.zip)
-STACK_NAME := $(BASE_NAME)-lambda-layer
+STACK_NAME := $(BASE_NAME)-lambda-layer-${DEFAULT_AWS_REGION}
 
 clean: 
 	rm -rf build
@@ -10,7 +10,7 @@ build/bin/ffmpeg:
 	mkdir -p build/bin
 	rm -rf build/ffmpeg*
 	cd build; \
-		curl https://johnvansickle.com/ffmpeg/releases/ffmpeg-release-amd64-static.tar.xz | tar x
+		curl https://johnvansickle.com/ffmpeg/releases/ffmpeg-release-amd64-static.tar.xz | tar xJ
 	mv build/ffmpeg*/ffmpeg build/ffmpeg*/ffprobe build/bin
 
 build/layer.zip: build/bin/ffmpeg
